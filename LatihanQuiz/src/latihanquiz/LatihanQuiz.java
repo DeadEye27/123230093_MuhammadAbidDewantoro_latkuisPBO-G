@@ -105,10 +105,21 @@ class InputFrame extends JFrame{
     
     private void processInput(){
         try {
-            String nama = nameField.getText();
-            String nim = nimField.getText();
-            double nilaiTugas = Double.parseDouble(tugasField.getText());
-            double nilaiQuiz = Double.parseDouble(quizField.getText());
+            String nama = nameField.getText().trim();
+            String nim = nimField.getText().trim();
+            
+            if (!nim.matches("\\d{9}")) {
+                JOptionPane.showMessageDialog(this, "NIM harus berupa 9 digit angka!", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            double nilaiTugas = Double.parseDouble(tugasField.getText().trim());
+            double nilaiQuiz = Double.parseDouble(quizField.getText().trim());
+            
+            if (nilaiTugas < 0 || nilaiTugas > 100 || nilaiQuiz < 0 || nilaiQuiz > 100) {
+                JOptionPane.showMessageDialog(this , "Nilai harus dalam rentang 0-100!", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
             String tipeKelas = teoriButton.isSelected() ? "Kelas Teori" : "Kelas Praktikum";
             String mataKuliah = (String) mataKuliahBox.getSelectedItem();
             
@@ -118,10 +129,12 @@ class InputFrame extends JFrame{
             
             String hasil = totalNilai > 85 ? "Pass" : "Not Pass";
             
-            JOptionPane.showMessageDialog(this, 
-                    "Nama : " + nama + "\nNIM : " + nim + 
-                    "\nTipe Kelas : " + tipeKelas + "\nMata Kuliah : " + mataKuliah +
-                    "\nHasil : " + hasil + "\nTotal  Nilai : " +totalNilai );
+            JOptionPane.showMessageDialog(this, String.format("Nama : %s\nNIM : %s\nTipe Kelas : %s\n Mata Kuliah : %s\nTotal Nilai :  %.2f\nHasil : %s", nama, nim, tipeKelas, mataKuliah, totalNilai, hasil));
+            
+//            JOptionPane.showMessageDialog(this, 
+//                    "Nama : " + nama + "\nNIM : " + nim + 
+//                    "\nTipe Kelas : " + tipeKelas + "\nMata Kuliah : " + mataKuliah +
+//                    "\nHasil : " + hasil + "\nTotal  Nilai : " +totalNilai );
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Nilai harus Berupa Angka", "Error", JOptionPane.ERROR_MESSAGE);
             
